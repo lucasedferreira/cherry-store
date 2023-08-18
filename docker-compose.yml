@@ -1,0 +1,41 @@
+version: '3'
+services:
+  db: 
+    image: postgres:15.4
+    container_name: postgres-cherrystore
+    environment:
+      - POSTGRES_DB=store
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=changeme
+      - PGDATA=/var/lib/postgresql/data/cherry-store
+    volumes:
+      - ./db/:/docker-entrypoint-initdb.d # this is how we persist a sql db even when container stops
+      # - "psql-data:/var/lib/postgresql/data"
+    ports:
+      - 5432:5432
+    networks:
+      - store
+  app:
+    build: 
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: phpapp-cherrystore
+    volumes:
+      - "./app/src:/var/www/html" # sync the current dir on local machine to the dir of container
+    ports:
+      - 8000:80
+    networks:
+      - store
+  adminer:
+    image: adminer
+    container_name: adminer-cherrystore
+    ports:
+      - "5050:8080"
+    networks:
+      - store
+    depends_on:
+      - db
+
+networks:
+  store:
+    driver: bridge
