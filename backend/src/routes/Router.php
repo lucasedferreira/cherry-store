@@ -1,6 +1,6 @@
 <?php
 
-namespace CherryStore\Api;
+namespace CherryStore\Api\Route;
 
 class Router
 {
@@ -11,7 +11,7 @@ class Router
     foreach (glob(__DIR__ . "/*.php") as $path) {
       $filename = pathinfo($path, PATHINFO_FILENAME);
       if ($filename === "Router") continue;
-      new ("CherryStore\Api\\" . $filename)();
+      new ("CherryStore\Api\Route\\" . $filename)();
     }
   }
 

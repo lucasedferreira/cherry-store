@@ -1,7 +1,7 @@
 <?php
-namespace CherryStore\Api;
+namespace CherryStore\Api\Route;
 
-class ProductRoutes extends Router
+class Product extends Router
 {
   public $routes = array();
 

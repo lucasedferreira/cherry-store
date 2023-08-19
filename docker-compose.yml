@@ -17,11 +17,11 @@ services:
       - store
   app:
     build: 
-      context: ./app
+      context: ./backend
       dockerfile: Dockerfile
     container_name: phpapp-cherrystore
     volumes:
-      - ./app/src:/var/www/html # sync the current dir on local machine to the dir of container
+      - ./backend/src:/var/www/html # sync the current dir on local machine to the dir of container
     ports:
       - 9000:9000
     networks:
