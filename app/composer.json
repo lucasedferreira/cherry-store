@@ -1,0 +1,19 @@
+{
+  "name": "lucasedferreira/cherry-store",
+  "description": "Desafio técnico para SoftExpert",
+  "authors": [
+    {
+      "name": "Lucas Eduardo Batista Ferreira",
+      "email": "lucasedbatista@gmail.com"
+    }
+  ],
+  "autoload": {
+    "classmap": [
+      "html/"
+    ]
+  },
+  "require": {
+    "php": ">=8.2.6",
+    "monolog/monolog": "3.4.*"
+  }
+}

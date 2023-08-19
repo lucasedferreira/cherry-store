@@ -21,16 +21,16 @@ services:
       dockerfile: Dockerfile
     container_name: phpapp-cherrystore
     volumes:
-      - "./app/src:/var/www/html" # sync the current dir on local machine to the dir of container
+      - ./app/src:/var/www/html # sync the current dir on local machine to the dir of container
     ports:
-      - 8000:80
+      - 9000:9000
     networks:
       - store
   adminer:
     image: adminer
     container_name: adminer-cherrystore
     ports:
-      - "5050:8080"
+      - 5050:8080
     networks:
       - store
     depends_on:
