@@ -10,10 +10,15 @@ class BaseMiddleware
   {
     foreach ($this->requiredFields as $requiredField) {
       if (!isset($category->$requiredField) || $category->$requiredField === "") {
-        header("HTTP/1.1 500 Internal Server Error");
-        echo "Field " . $requiredField . " is required.";
-        die();
+        $this->returnError("Field " . $requiredField . " is required.");
       }
     }
+  }
+
+  public function returnError($message)
+  {
+    header("HTTP/1.1 500 Internal Server Error");
+    echo $message;
+    die();
   }
 }

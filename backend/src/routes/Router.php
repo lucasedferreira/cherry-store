@@ -34,9 +34,21 @@ class Router
 
     foreach ($this->routes as $route) {
       if ($arrayStringURL[1] == $route['route'] && $method == $route['method']) {
-        call_user_func(array($route['middleware'][0], $route['middleware'][1]), $request);
+        $this->runMiddlewares($route['middleware'], $request);
         call_user_func(array($route['resouce'][0], $route['resouce'][1]), $request);
       }
     }
+  }
+
+  private function runMiddlewares($middlewares, $request)
+  {
+    if (is_array($middlewares[0])) {
+      foreach ($middlewares as $middleware) {
+        call_user_func(array($middleware[0], $middleware[1]), $request);
+      }
+      return;
+    }
+
+    call_user_func(array($middlewares[0], $middlewares[1]), $request);
   }
 }

@@ -13,6 +13,6 @@ class ProductCategory extends BaseService
       "name" => $category->name,
       "tax" => floatval($category->tax)
     ];
-    $this->model->insert($parsedCategory);
+    return $this->model->insert($parsedCategory);
   }
 }
