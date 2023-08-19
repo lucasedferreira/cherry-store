@@ -1,6 +1,6 @@
 <?php
 
-namespace CherryStore\Api\Route;
+namespace CherryStore\Api;
 
 class Router
 {
@@ -15,12 +15,13 @@ class Router
     }
   }
 
-  public function addNewRoute($method, $route, $resouce)
+  public function addNewRoute($method, $route, $resouce, $middleware = null)
   {
     $route = array(
       "route" => $route,
       "method" => $method,
-      "resouce" => $resouce
+      "resouce" => $resouce,
+      "middleware" => $middleware
     );
     array_push($this->routes, $route);
   }
@@ -29,10 +30,12 @@ class Router
   {
     $arrayStringURL = explode("/", $_SERVER['REQUEST_URI']);
     $method = $_SERVER['REQUEST_METHOD'];
+    $request = json_decode(file_get_contents('php://input'));
 
-    foreach ($this->routes as $key => $route) {
+    foreach ($this->routes as $route) {
       if ($arrayStringURL[1] == $route['route'] && $method == $route['method']) {
-        call_user_func(array($route['resouce'][0], $route['resouce'][1]));
+        call_user_func(array($route['middleware'][0], $route['middleware'][1]), $request);
+        call_user_func(array($route['resouce'][0], $route['resouce'][1]), $request);
       }
     }
   }

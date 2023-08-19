@@ -1,13 +1,13 @@
 <?php
 namespace CherryStore\Api\Route;
 
-class Product extends Router
+class Product extends \CherryStore\Api\Router
 {
   public $routes = array();
 
   public function __construct()
   {
-    $controller = new ProductController();
+    $controller = new \CherryStore\Api\Controller\Product();
     $this->addNewRoute("GET", "teste", array($controller, 'test'));
     // $this->addNewRoute("POST", "teste", "Este é um POST");
 

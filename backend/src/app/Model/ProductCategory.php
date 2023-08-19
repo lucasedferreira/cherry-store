@@ -4,11 +4,9 @@ namespace CherryStore\Api\Model;
 
 class ProductCategory extends BaseModel
 {
-  public function all()
+  public function __construct()
   {
-    return $this->db->createQueryBuilder()
-      ->select('id', 'name')
-      ->from('product_categories')
-      ->fetchAllAssociative();
+    parent::__construct();
+    $this->table = "product_categories";
   }
 }

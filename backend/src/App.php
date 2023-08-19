@@ -26,6 +26,8 @@ class App
       'driver' => 'pdo_pgsql'
     ]);
 
+    new Router();
+
     return $this;
   }
 }
