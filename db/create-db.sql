@@ -41,20 +41,20 @@ CREATE TABLE order_products (
 );
 
 INSERT INTO
-  product_categories(id, name, tax)
+  product_categories(name, tax)
 VALUES
-  (1, 'Categoria 1', 1.5),
-  (2, 'Categoria 2', 2),
-  (3, 'Categoria 4', 4);
+  ('Categoria 1', 1.5),
+  ('Categoria 2', 2),
+  ('Categoria 4', 4);
 
 INSERT INTO
-  products(id, name, price, category_id)
+  products(name, price, category_id)
 VALUES
-  (1, 'Produto 1', 20, 1),
-  (2, 'Produto 2', 15, 1),
-  (3, 'Produto 3', 30, 1),
-  (4, 'Produto 4', 19.99, 2),
-  (5, 'Produto 5', 11, 2),
-  (6, 'Produto 6', 5, 2),
-  (7, 'Produto 7', 50, 3),
-  (8, 'Produto 8', 100, 3);
+  ('Produto 1', 20, 1),
+  ('Produto 2', 15, 1),
+  ('Produto 3', 30, 1),
+  ('Produto 4', 19.99, 2),
+  ('Produto 5', 11, 2),
+  ('Produto 6', 5, 2),
+  ('Produto 7', 50, 3),
+  ('Produto 8', 100, 3);

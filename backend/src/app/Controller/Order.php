@@ -3,7 +3,6 @@
 namespace CherryStore\Api\Controller;
 
 use CherryStore\Api\Service\Order as Service;
-use CherryStore\Api\Model\Order as Model;
 
 class Order extends BaseController
 {

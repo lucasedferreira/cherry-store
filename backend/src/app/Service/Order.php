@@ -23,7 +23,7 @@ class Order extends BaseService
       $order['products'] = $orderProducts;
     }
 
-    return $order;
+    return $orders;
   }
 
   public function create($products)
