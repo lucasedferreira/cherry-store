@@ -13,6 +13,48 @@ CREATE TABLE products (
   category_id integer NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT now(),
   updated_at TIMESTAMP NOT NULL DEFAULT now(),
-  FOREIGN KEY (category_id)
-    REFERENCES product_categories (id)
+  FOREIGN KEY (category_id) REFERENCES product_categories (id) ON DELETE CASCADE
 );
+
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  subtotal decimal NOT NULL,
+  tax_total decimal NOT NULL,
+  total decimal NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP NOT NULL DEFAULT now()
+);
+
+CREATE TABLE order_products (
+  id SERIAL PRIMARY KEY,
+  order_id integer NOT NULL,
+  product_id integer NOT NULL,
+  product_name varchar(255) NOT NULL,
+  product_price decimal NOT NULL,
+  product_tax decimal NOT NULL,
+  product_quantity decimal NOT NULL,
+  total decimal NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP NOT NULL DEFAULT now(),
+  FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
+);
+
+INSERT INTO
+  product_categories(id, name, tax)
+VALUES
+  (1, 'Categoria 1', 1.5),
+  (2, 'Categoria 2', 2),
+  (3, 'Categoria 4', 4);
+
+INSERT INTO
+  products(id, name, price, category_id)
+VALUES
+  (1, 'Produto 1', 20, 1),
+  (2, 'Produto 2', 15, 1),
+  (3, 'Produto 3', 30, 1),
+  (4, 'Produto 4', 19.99, 2),
+  (5, 'Produto 5', 11, 2),
+  (6, 'Produto 6', 5, 2),
+  (7, 'Produto 7', 50, 3),
+  (8, 'Produto 8', 100, 3);

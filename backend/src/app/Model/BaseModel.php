@@ -15,13 +15,13 @@ abstract class BaseModel
   public function all()
   {
     return $this->db->createQueryBuilder()
-      // ->select('id', 'name')
+      ->select('*')
       ->from($this->table)
       ->fetchAllAssociative();
   }
 
-  public function insert($data)
+  public function delete($id)
   {
-    return $this->db->insert($this->table, $data);
+    return $this->db->delete($this->table, ["id" => $id]);
   }
 }

@@ -22,6 +22,7 @@ services:
     container_name: phpapp-cherrystore
     volumes:
       - ./backend/src:/var/www/html # sync the current dir on local machine to the dir of container
+    entrypoint: [ "bash", "-c", "cd /var/www && composer dump-autoload && cd html && php -S 0.0.0.0:9000"]  
     ports:
       - 9000:9000
     networks:

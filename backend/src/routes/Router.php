@@ -28,20 +28,53 @@ class Router
 
   public function setRoutes()
   {
-    $arrayStringURL = explode("/", $_SERVER['REQUEST_URI']);
-    $method = $_SERVER['REQUEST_METHOD'];
-    $request = json_decode(file_get_contents('php://input'));
-
     foreach ($this->routes as $route) {
-      if ($arrayStringURL[1] == $route['route'] && $method == $route['method']) {
-        $this->runMiddlewares($route['middleware'], $request);
-        call_user_func(array($route['resouce'][0], $route['resouce'][1]), $request);
+      $matched = $this->checkIfRouteMatchURL($route);
+      if ($matched)
+        $this->runRoute($route);
+    }
+  }
+
+  private function checkIfRouteMatchURL(&$route)
+  {
+    $arrayURL = array_slice(explode("/", $_SERVER['REQUEST_URI']), 1);
+
+    $method = $_SERVER['REQUEST_METHOD'];
+    if ($method !== $route['method']) {
+      return false;
+    }
+
+    $routes = explode("/", $route['route']);
+    if (sizeof($routes) !== sizeof($arrayURL))
+      return false;
+
+    $route['params'] = [];
+    foreach ($arrayURL as $key => $url) {
+      if (isset($routes[$key][0]) && $routes[$key][0] === ":") {
+        $route['params'][substr($routes[$key], 1)] = $url;
+      } else if (!isset($routes[$key]) || $routes[$key] !== $url) {
+        // var_dump($routes[$key], $url);
+        return false;
       }
     }
+
+    return true;
+  }
+
+  private function runRoute($route)
+  {
+    $request = json_decode(file_get_contents('php://input'));
+    $this->runMiddlewares($route['middleware'], $request);
+    $params = [];
+    if($request) $params[] = $request;
+    if($route['params']) $params[] = $route['params'];
+    call_user_func(array($route['resouce'][0], $route['resouce'][1]), ...$params);
   }
 
   private function runMiddlewares($middlewares, $request)
   {
+    if (is_null($middlewares)) return;
+
     if (is_array($middlewares[0])) {
       foreach ($middlewares as $middleware) {
         call_user_func(array($middleware[0], $middleware[1]), $request);

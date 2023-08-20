@@ -9,5 +9,3 @@ RUN composer install && composer update
 EXPOSE 9000
 # RUN php index.php
 # RUN php -S 0.0.0.0:8080
-WORKDIR /var/www/html
-CMD [ "php", "-S", "0.0.0.0:9000" ]

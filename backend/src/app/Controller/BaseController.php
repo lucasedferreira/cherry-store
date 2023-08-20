@@ -11,7 +11,8 @@ class BaseController
 
   public function response($status, $message = "")
   {
-    header("HTTP/1.1 " . $status);
+    http_response_code($status);
+    header("Content-Type: application/json; charset=utf-8;");
     echo $message;
   }
 }
