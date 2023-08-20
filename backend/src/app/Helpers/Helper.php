@@ -9,3 +9,13 @@ if (!function_exists('object_to_array')) {
     return $result;
   }
 }
+
+if (!function_exists('dd')) {
+  function dd()
+  {
+    foreach (func_get_args() as $x) {
+      echo var_export($x, true);
+    }
+    die;
+  }
+}

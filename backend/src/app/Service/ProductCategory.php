@@ -1,4 +1,5 @@
 <?php
+
 namespace CherryStore\Api\Service;
 
 class ProductCategory extends BaseService
@@ -8,11 +9,25 @@ class ProductCategory extends BaseService
     $this->model = new \CherryStore\Api\Model\ProductCategory();
   }
 
-  public function insert($category) {
+  public function insert($category)
+  {
     $parsedCategory = [
       "name" => $category->name,
       "tax" => floatval($category->tax)
     ];
     return $this->model->insert($parsedCategory);
+  }
+
+  public function update($categoryID, $category)
+  {
+    $parsedCategory = [];
+
+    if (isset($category->name) && $category->name !== "")
+      $parsedCategory['name'] = trim($category->name);
+
+    if (isset($category->tax))
+      $parsedCategory['tax'] = floatval($category->tax);
+
+    return $this->model->update($categoryID, $parsedCategory);
   }
 }

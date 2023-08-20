@@ -1,7 +1,9 @@
 <?php
 
 namespace CherryStore\Api\Middleware;
+
 use CherryStore\Api\Service\Product as Service;
+use CherryStore\Api\Service\ProductCategory as CategoryService;
 
 class Product extends BaseMiddleware
 {
@@ -10,9 +12,18 @@ class Product extends BaseMiddleware
     $this->requiredFields = ['name', 'price', 'categoryID'];
   }
 
-  public function checkIfCategoryExists($product) {
-    $service = new Service();
-    if($service->checkIfExists($product->categoryID)) return;
+  public function checkIfCategoryExists($product)
+  {
+    $categoryService = new CategoryService();
+    if ($categoryService->checkIfExists($product->categoryID)) return;
     $this->returnError("Category does not exist.");
+  }
+
+  public function checkIfProductExists($params)
+  {
+    $productID = $params['productID'];
+    $service = new Service();
+    if ($service->checkIfExists($productID)) return;
+    $this->returnError("Product does not exist.");
   }
 }

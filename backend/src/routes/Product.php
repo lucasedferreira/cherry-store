@@ -16,6 +16,7 @@ class Product extends \CherryStore\Api\Router
       array($middleware, 'validate'),
       array($middleware, 'checkIfCategoryExists')
     ]);
+    $this->addNewRoute("PUT", "product/:productID", array($controller, 'update'), array($middleware, 'checkIfProductExists'));
     $this->addNewRoute("DELETE", "product/:productID", array($controller, 'delete'));
 
     $this->setRoutes();

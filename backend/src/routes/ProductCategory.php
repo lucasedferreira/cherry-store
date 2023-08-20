@@ -12,6 +12,7 @@ class ProductCategory extends \CherryStore\Api\Router
 
     $this->addNewRoute("GET", "product-category", array($controller, 'all'));
     $this->addNewRoute("POST", "product-category", array($controller, 'insert'), array($middleware, 'validate'));
+    $this->addNewRoute("PUT", "product-category/:categoryID", array($controller, 'update'), array($middleware, 'checkIfCategoryExists'));
     $this->addNewRoute("DELETE", "product-category/:categoryID", array($controller, 'delete'));
 
     $this->setRoutes();

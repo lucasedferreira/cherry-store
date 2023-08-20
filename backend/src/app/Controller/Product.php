@@ -20,6 +20,15 @@ class Product extends BaseController
     if ($result) $this->response("201", "Product successuly created.");
   }
 
+  public function update($params, $product)
+  {
+    $productID = $params['productID'];
+    $service = new Service();
+    $result = $service->update($productID, $product);
+    if ($result) $this->response("200", "Product successuly updated.");
+    else $this->response("500", "Error when updating product.");
+  }
+
   public function delete($params)
   {
     $productID = $params['productID'];

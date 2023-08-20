@@ -21,6 +21,15 @@ class ProductCategory extends BaseController
       $this->response("201", "Category successuly created.");
   }
 
+  public function update($params, $category)
+  {
+    $categoryID = $params['categoryID'];
+    $service = new Service();
+    $result = $service->update($categoryID, $category);
+    if ($result) $this->response("200", "Category successuly updated.");
+    else $this->response("500", "Error when updating category.");
+  }
+
   public function delete($params)
   {
     $categoryID = $params['categoryID'];

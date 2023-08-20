@@ -64,24 +64,24 @@ class Router
   private function runRoute($route)
   {
     $request = json_decode(file_get_contents('php://input'));
-    $this->runMiddlewares($route['middleware'], $request);
     $params = [];
-    if($request) $params[] = $request;
-    if($route['params']) $params[] = $route['params'];
+    if ($route['params']) $params[] = $route['params'];
+    if ($request) $params[] = $request;
+    $this->runMiddlewares($route['middleware'], $params);
     call_user_func(array($route['resouce'][0], $route['resouce'][1]), ...$params);
   }
 
-  private function runMiddlewares($middlewares, $request)
+  private function runMiddlewares($middlewares, $params)
   {
     if (is_null($middlewares)) return;
 
     if (is_array($middlewares[0])) {
       foreach ($middlewares as $middleware) {
-        call_user_func(array($middleware[0], $middleware[1]), $request);
+        call_user_func(array($middleware[0], $middleware[1]), ...$params);
       }
       return;
     }
 
-    call_user_func(array($middlewares[0], $middlewares[1]), $request);
+    call_user_func(array($middlewares[0], $middlewares[1]), ...$params);
   }
 }
