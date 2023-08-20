@@ -14,7 +14,7 @@ class ProductCategory extends BaseMiddleware
   {
     $categoryID = $params['categoryID'];
     $service = new Service();
-    if ($service->checkIfExists($categoryID)) return;
+    if ($service->getByID($categoryID)) return;
     $this->returnError("Category does not exist.");
   }
 }

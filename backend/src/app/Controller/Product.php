@@ -9,8 +9,8 @@ class Product extends BaseController
 {
   public function all()
   {
-    $categories = (new Model())->all();
-    $this->response("200", json_encode($categories));
+    $products = (new Model())->all();
+    $this->response("200", json_encode($products));
   }
 
   public function insert($product)
@@ -36,5 +36,12 @@ class Product extends BaseController
     $result = $model->delete($productID);
     if ($result) $this->response("200", "Product successuly deleted.");
     else $this->response("404", "Product does not exist.");
+  }
+
+  public function getByCategoryID($params)
+  {
+    $categoryID = $params['categoryID'];
+    $products = (new Model())->getByCategoryID($categoryID);
+    $this->response("200", json_encode($products));
   }
 }

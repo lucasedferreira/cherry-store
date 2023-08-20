@@ -20,6 +20,34 @@ abstract class BaseModel
       ->fetchAllAssociative();
   }
 
+  public function getByID($id)
+  {
+    return $this->db->createQueryBuilder()
+      ->from($this->table)
+      ->select("*")
+      ->where('id = ?')
+      ->setParameter(0, $id)
+      ->setMaxResults(1)
+      ->fetchAllAssociative();
+  }
+
+  public function insert($data)
+  {
+    return $this->db->insert($this->table, $data);
+  }
+
+  public function getLastRow()
+  {
+    $lastRow = $this->db->createQueryBuilder()
+      ->select('*')
+      ->from($this->table)
+      ->orderBy('id', 'DESC')
+      ->setMaxResults(1)
+      ->fetchAllAssociative();
+    if (!$lastRow || sizeof($lastRow) === 0) return null;
+    return $lastRow[0];
+  }
+
   public function update($id, $data)
   {
     $data['updated_at'] = "now()";
@@ -29,15 +57,5 @@ abstract class BaseModel
   public function delete($id)
   {
     return $this->db->delete($this->table, ["id" => $id]);
-  }
-
-  public function checkIfExists($id)
-  {
-    return $this->db->createQueryBuilder()
-      ->from($this->table)
-      ->where('id = ?')
-      ->setParameter(0, $id)
-      ->setMaxResults(1)
-      ->fetchAllAssociative();
   }
 }

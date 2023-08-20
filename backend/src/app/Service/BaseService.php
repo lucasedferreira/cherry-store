@@ -6,14 +6,15 @@ class BaseService
 {
   protected $model;
 
-  public function all() {
+  public function all()
+  {
     return $this->model->all();
   }
 
-  public function checkIfExists($id)
+  public function getByID($id)
   {
-    $result = $this->model->checkIfExists($id);
-    if (count($result) === 0) return false;
-    return true;
+    $result = $this->model->getByID($id);
+    if (!$result || sizeof($result) === 0) return null;
+    return $result[0];
   }
 }

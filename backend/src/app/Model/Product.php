@@ -9,4 +9,14 @@ class Product extends BaseModel
     parent::__construct();
     $this->table = "products";
   }
+
+  public function getByCategoryID($categoryID)
+  {
+    return $this->db->createQueryBuilder()
+      ->from($this->table)
+      ->select("*")
+      ->where('category_id = ?')
+      ->setParameter(0, $categoryID)
+      ->fetchAllAssociative();
+  }
 }

@@ -33,7 +33,7 @@ class Product extends BaseService
 
     if (isset($product->categoryID)) {
       $categoryService = new CategoryService();
-      if (!$categoryService->checkIfExists($product->categoryID))
+      if (!$categoryService->getByID($product->categoryID))
         return false;
 
       $parsedProduct['category_id'] = $product->categoryID;

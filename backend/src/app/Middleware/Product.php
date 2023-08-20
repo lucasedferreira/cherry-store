@@ -15,7 +15,7 @@ class Product extends BaseMiddleware
   public function checkIfCategoryExists($product)
   {
     $categoryService = new CategoryService();
-    if ($categoryService->checkIfExists($product->categoryID)) return;
+    if ($categoryService->getByID($product->categoryID)) return;
     $this->returnError("Category does not exist.");
   }
 
@@ -23,7 +23,7 @@ class Product extends BaseMiddleware
   {
     $productID = $params['productID'];
     $service = new Service();
-    if ($service->checkIfExists($productID)) return;
+    if ($service->getByID($productID)) return;
     $this->returnError("Product does not exist.");
   }
 }

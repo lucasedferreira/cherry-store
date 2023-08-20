@@ -14,7 +14,7 @@ if (!function_exists('dd')) {
   function dd()
   {
     foreach (func_get_args() as $x) {
-      echo var_export($x, true);
+      echo var_export($x, true) . "\n";
     }
     die;
   }
