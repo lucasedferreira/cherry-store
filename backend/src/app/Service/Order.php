@@ -4,12 +4,26 @@ namespace CherryStore\Api\Service;
 
 use CherryStore\Api\Service\Product as ProductService;
 use CherryStore\Api\Service\ProductCategory as ProductCategoryService;
+use CherryStore\Api\Model\OrderProduct as OrderProductModel;
 
 class Order extends BaseService
 {
   public function __construct()
   {
     $this->model = new \CherryStore\Api\Model\Order();
+  }
+
+  public function all()
+  {
+    $orders = $this->model->all();
+
+    $orderProductModel = new OrderProductModel();
+    foreach ($orders as $order) {
+      $orderProducts = $orderProductModel->getByOrderID($order['id']);
+      $order['products'] = $orderProducts;
+    }
+
+    return $order;
   }
 
   public function create($products)

@@ -9,7 +9,7 @@ class Order extends BaseController
 {
   public function all()
   {
-    $orders = (new Model())->all();
+    $orders = (new Service())->all();
     $this->response("200", json_encode($orders));
   }
 
