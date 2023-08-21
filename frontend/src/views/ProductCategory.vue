@@ -107,12 +107,12 @@ export default {
       if (!this.validate()) return;
 
       const productCategoryService = new ProductCategoryService();
-      await productCategoryService.addCategory({
+      const createdCategory = await productCategoryService.addCategory({
         name: this.input.name.value,
         tax: this.input.tax.value,
       });
+      this.categories.push(createdCategory);
 
-      this.categories = await productCategoryService.getCategories();
       this.resetInputs();
     },
     validate() {
@@ -148,8 +148,7 @@ export default {
 }
 
 thead {
-  // background-color: #09de3764;
-  background-color: #dea10964;
+  background-color: #dea2094d;
 }
 
 tbody tr:not(:last-child):hover {

@@ -7,6 +7,10 @@ export default class ProductCategory {
   }
 
   async addCategory(category) {
-    await axios.post("http://localhost:9000/product-category", category);
+    const response = await axios.post(
+      "http://localhost:9000/product-category",
+      category
+    );
+    return response.data;
   }
 }

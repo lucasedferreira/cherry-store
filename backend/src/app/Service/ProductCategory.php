@@ -15,7 +15,8 @@ class ProductCategory extends BaseService
       "name" => $category->name,
       "tax" => floatval($category->tax)
     ];
-    return $this->model->insert($parsedCategory);
+    $this->model->insert($parsedCategory);
+    return $this->model->getLastRow();
   }
 
   public function update($categoryID, $category)

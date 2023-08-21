@@ -16,9 +16,9 @@ class ProductCategory extends BaseController
   public function insert($category)
   {
     $service = new Service();
-    $result = $service->insert($category);
-    if ($result)
-      $this->response("201", "Category successuly created.");
+    $createdCategory = $service->insert($category);
+    if ($createdCategory)
+      $this->response("201", json_encode($createdCategory));
   }
 
   public function update($params, $category)
