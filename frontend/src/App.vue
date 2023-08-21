@@ -24,11 +24,11 @@ export default {
   outline: 0;
   box-sizing: border-box;
 }
-.body {
-  background: linear-gradient(limegreen, transparent),
-    linear-gradient(90deg, skyblue, transparent),
-    linear-gradient(-90deg, coral, transparent);
+body {
+  background: linear-gradient(coral, transparent),
+    linear-gradient(90deg, coral, transparent),
+    linear-gradient(45deg, skyblue, transparent),
+    linear-gradient(-90deg, limegreen, transparent) !important;
   background-blend-mode: screen;
-  height: 100vh;
 }
 </style>

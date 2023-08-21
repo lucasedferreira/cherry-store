@@ -1,9 +1,12 @@
 import axios from "axios";
 
-const getCategories = async () => {
-  return await axios.get("http://localhost:9000/product-category");
-};
+export default class ProductCategory {
+  async getCategories() {
+    const response = await axios.get("http://localhost:9000/product-category");
+    return response.data;
+  }
 
-export const Categories = async () => {
-  return (await getCategories()).data;
-};
+  async addCategory(category) {
+    await axios.post("http://localhost:9000/product-category", category);
+  }
+}

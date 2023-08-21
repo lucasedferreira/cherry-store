@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1>Product Categories</h1>
-    <table class="table table-hover" v-show="categories.length">
+    <table class="table" v-show="categories.length">
       <thead>
         <tr>
           <th>Name</th>
@@ -33,10 +33,10 @@
                 class="form-control"
                 id="name"
                 placeholder="Enter name"
-                v-model="input.name"
+                v-model="input.name.value"
               />
-              <small class="form-text text-danger"
-                >We'll never share your email with anyone else.</small
+              <small class="form-text text-danger" v-if="input.name.error"
+                >Name is required</small
               >
             </div>
           </td>
@@ -48,10 +48,10 @@
                 class="form-control"
                 id="tax"
                 placeholder="Enter tax"
-                v-model="input.tax"
+                v-model="input.tax.value"
               />
-              <small class="form-text text-danger"
-                >We'll never share your email with anyone else.</small
+              <small class="form-text text-danger" v-if="input.tax.error"
+                >Tax is required</small
               >
             </div>
           </td>
@@ -70,7 +70,7 @@
 import openIcon from "@/assets/icons/open.svg";
 import deleteIcon from "@/assets/icons/delete.svg";
 import addIcon from "@/assets/icons/add.svg";
-import { Categories } from "../services/ProductCategory";
+import ProductCategoryService from "../services/ProductCategory";
 
 export default {
   name: "ProductCategory",
@@ -86,22 +86,74 @@ export default {
     return {
       categories: [],
       input: {
-        name: "",
-        tax: "",
+        name: {
+          value: "",
+          error: false,
+        },
+        tax: {
+          value: "",
+          error: false,
+        },
       },
       showLoading: true,
     };
   },
   async mounted() {
-    this.categories = await Categories();
+    const productCategoryService = new ProductCategoryService();
+    this.categories = await productCategoryService.getCategories();
+  },
+  methods: {
+    async add() {
+      if (!this.validate()) return;
+
+      const productCategoryService = new ProductCategoryService();
+      await productCategoryService.addCategory({
+        name: this.input.name.value,
+        tax: this.input.tax.value,
+      });
+
+      this.categories = await productCategoryService.getCategories();
+      this.resetInputs();
+    },
+    validate() {
+      if (this.input.name.value === "") this.input.name.error = true;
+      if (this.input.tax.value === "") this.input.tax.error = true;
+      if (this.input.name.error || this.input.tax.error) return false;
+      return true;
+    },
+    resetInputs() {
+      this.input = {
+        name: {
+          value: "",
+          error: false,
+        },
+        tax: {
+          value: "",
+          error: false,
+        },
+      };
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.container {
+  margin-top: 50px;
+}
+
 .table {
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+thead {
+  // background-color: #09de3764;
+  background-color: #dea10964;
+}
+
+tbody tr:not(:last-child):hover {
+  background-color: #dea2090f;
 }
 
 .action-button {

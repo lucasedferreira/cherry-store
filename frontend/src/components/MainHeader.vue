@@ -5,7 +5,7 @@
         class="logoHeader"
         :src="image"
         @click="navigateTo('Home')"
-        style="width: 150px"
+        style="height: 50px"
       />
       <nav>
         <ul>
@@ -43,7 +43,7 @@ export default {
   height: 70px;
   display: flex;
   align-items: center;
-  background: linear-gradient(to bottom, #727877 0%, #c0c0b808 100%);
+  background: linear-gradient(to bottom, coral 0%, transparent 100%);
 }
 .logoHeader {
   margin-left: 30px;
