@@ -17,6 +17,7 @@ class Product extends BaseModel
       ->select("*")
       ->where('category_id = ?')
       ->setParameter(0, $categoryID)
+      ->orderBy('id', 'ASC')
       ->fetchAllAssociative();
   }
 }

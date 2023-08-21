@@ -10,17 +10,42 @@
         </tr>
       </thead>
       <tbody>
-        <tr :key="category.id" v-for="category in categories">
-          <td>
-            {{ category.name }}
+        <tr :key="category.id" v-for="(category, index) in categories">
+          <td v-show="edditing != category.id">{{ category.name }}</td>
+          <td v-show="edditing != category.id">{{ category.tax }}%</td>
+          <td v-show="edditing == category.id">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              placeholder="Enter name"
+              v-model="category.name"
+            />
           </td>
-          <td>{{ category.tax }}%</td>
-          <td style="width: 18%">
-            <a class="action-button" @click="open(category)">
+          <td v-show="edditing == category.id">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              placeholder="Enter tax"
+              v-model="category.tax"
+            />
+          </td>
+          <td v-show="edditing != category.id" style="width: 18%">
+            <a class="action-button" @click="open(category.id)">
               <img :src="openIcon" width="20" alt="open" />
             </a>
-            <a class="action-button" @click="delete category.id">
+            <a class="action-button" @click="edit(category.id)">
+              <img :src="editIcon" width="16" alt="edit" />
+            </a>
+            <a
+              class="action-button"
+              @click="deleteCategory(category.id, index)"
+            >
               <img :src="deleteIcon" width="20" alt="delete" />
+            </a>
+          </td>
+          <td style="width: 18%" v-show="edditing == category.id">
+            <a class="action-button" @click="updateCategory(category)">
+              <img :src="saveIcon" width="20" alt="delete" />
             </a>
           </td>
         </tr>
@@ -41,7 +66,7 @@
             </div>
           </td>
           <td>
-            <div class="form-group form-control-sm">
+            <div class="form-group">
               <label for="tax">Tax (%)</label>
               <input
                 type="text"
@@ -69,6 +94,8 @@
 <script>
 import openIcon from "@/assets/icons/open.svg";
 import deleteIcon from "@/assets/icons/delete.svg";
+import editIcon from "@/assets/icons/edit.svg";
+import saveIcon from "@/assets/icons/save.svg";
 import addIcon from "@/assets/icons/add.svg";
 import ProductCategoryService from "../services/ProductCategory";
 
@@ -79,12 +106,15 @@ export default {
     return {
       openIcon,
       deleteIcon,
+      editIcon,
+      saveIcon,
       addIcon,
     };
   },
   data() {
     return {
       categories: [],
+      edditing: null,
       input: {
         name: {
           value: "",
@@ -95,7 +125,6 @@ export default {
           error: false,
         },
       },
-      showLoading: true,
     };
   },
   async mounted() {
@@ -103,6 +132,9 @@ export default {
     this.categories = await productCategoryService.getCategories();
   },
   methods: {
+    edit(categoryID) {
+      this.edditing = categoryID;
+    },
     async add() {
       if (!this.validate()) return;
 
@@ -133,46 +165,21 @@ export default {
         },
       };
     },
+    open(categoryID) {
+      this.$router.push({ path: `/product-category/${categoryID}/products` });
+    },
+    async updateCategory(category) {
+      const productCategoryService = new ProductCategoryService();
+      await productCategoryService.updateCategory(category);
+      this.edditing = null;
+    },
+    async deleteCategory(categoryID, categoryIndex) {
+      const productCategoryService = new ProductCategoryService();
+      await productCategoryService.deleteCategory(categoryID);
+      this.categories.splice(categoryIndex, 1);
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-.container {
-  margin-top: 50px;
-}
-
-.table {
-  background-color: #fff;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-
-thead {
-  background-color: #dea2094d;
-}
-
-tbody tr:not(:last-child):hover {
-  background-color: #dea2090f;
-}
-
-.action-button {
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-.add-button {
-  cursor: pointer;
-  position: relative;
-
-  img {
-    position: absolute;
-    top: 50%;
-    left: 35px;
-    transform: translate(-50%, -50%);
-  }
-}
-
-.form-control-sm {
-  height: calc(1.5em + 4rem + 2px);
-}
-</style>
+<style lang="scss" scoped></style>

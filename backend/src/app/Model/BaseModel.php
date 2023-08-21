@@ -17,6 +17,7 @@ abstract class BaseModel
     return $this->db->createQueryBuilder()
       ->select('*')
       ->from($this->table)
+      ->orderBy('id', 'ASC')
       ->fetchAllAssociative();
   }
 

@@ -13,6 +13,10 @@ class App
 
   public function boot(): static
   {
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: *");
+    header("Access-Control-Allow-Headers: *");
+
     // $dotenv = Dotenv::createImmutable(dirname(__DIR__));
     // $dotenv->load();
 

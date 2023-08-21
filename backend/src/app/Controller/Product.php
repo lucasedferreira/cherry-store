@@ -16,8 +16,9 @@ class Product extends BaseController
   public function insert($product)
   {
     $service = new Service();
-    $result = $service->insert($product);
-    if ($result) $this->response("201", "Product successuly created.");
+    $createdProduct = $service->insert($product);
+    if ($createdProduct)
+      $this->response("201", json_encode($createdProduct));
   }
 
   public function update($params, $product)

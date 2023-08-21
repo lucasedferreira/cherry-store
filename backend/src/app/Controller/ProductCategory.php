@@ -13,6 +13,13 @@ class ProductCategory extends BaseController
     $this->response("200", json_encode($categories));
   }
 
+  public function getByID($params)
+  {
+    $categoryID = $params['categoryID'];
+    $category = (new Service())->getByID($categoryID);
+    $this->response("200", json_encode($category));
+  }
+
   public function insert($category)
   {
     $service = new Service();

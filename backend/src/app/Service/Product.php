@@ -18,7 +18,8 @@ class Product extends BaseService
       "price" => floatval($product->price),
       "category_id" => intval($product->categoryID)
     ];
-    return $this->model->insert($parsedProduct);
+    $this->model->insert($parsedProduct);
+    return $this->model->getLastRow();
   }
 
   public function update($productID, $product)

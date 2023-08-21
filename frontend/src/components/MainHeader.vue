@@ -13,20 +13,23 @@
           <li @click="navigateTo('ProductCategory')">Product Categories</li>
           <li @click="navigateTo('Order')">Orders</li>
           <li @click="navigateTo('NewOrder')">Make a Order</li>
+          <li><a href="https://github.com/lucasedferreira/cherry-store" target="_blank"><img :src="githubIcon" height="30" alt="github" /></a></li>
         </ul>
       </nav>
-      <div id="icons">github</div>
     </div>
   </div>
 </template>
 
 <script>
 import image from "../assets/logo-small.png";
+import githubIcon from "@/assets/icons/github.svg";
+
 export default {
   name: "MainHeader",
-  data() {
+  setup() {
     return {
       image,
+      githubIcon,
     };
   },
   methods: {
@@ -52,7 +55,7 @@ export default {
   cursor: pointer;
 }
 nav {
-  width: 70vw;
+  width: 100%;
   color: #141714;
   display: flex;
   align-items: center;
@@ -60,7 +63,7 @@ nav {
 ul {
   list-style: none;
   margin: 0;
-  padding-left: 30px;
+  padding: 0 30px;
 }
 li {
   display: block;
@@ -72,18 +75,11 @@ li {
   font-family: Kanit, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-size: 16px;
 }
-li a {
-  color: #fff;
-  cursor: default;
-}
 li:hover {
   cursor: pointer;
   color: #56504a;
 }
-#icons {
-  width: 10%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+li:last-child {
+  float: right;
 }
 </style>
