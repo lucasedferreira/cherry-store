@@ -6,7 +6,7 @@ class BaseController
 {
   public function __construct()
   {
-    // header('Content-Type: application/json; charset=utf-8');
+    header("Access-Control-Allow-Origin: *");
   }
 
   public function response($status, $message = "")
