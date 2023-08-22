@@ -1,7 +1,8 @@
 <template>
-  <div class="container">
+  <div class="container text-center">
     <h1>Product Categories</h1>
-    <table class="table" v-show="categories.length">
+    <LoadingSpinner v-if="loading" style="margin-top: 15px;" />
+    <table class="table text-left" v-if="!loading">
       <thead>
         <tr>
           <th>Name</th>
@@ -10,6 +11,7 @@
         </tr>
       </thead>
       <tbody>
+        <th colspan="3" class="text-center" v-show="!categories.length">Wow, you don't have any category :o</th>
         <tr :key="category.id" v-for="(category, index) in categories">
           <td v-show="edditing != category.id">{{ category.name }}</td>
           <td v-show="edditing != category.id">{{ category.tax }}%</td>
@@ -69,7 +71,9 @@
             <div class="form-group">
               <label for="tax">Tax (%)</label>
               <input
-                type="text"
+                v-maska
+                data-maska="0.99"
+                data-maska-tokens="0:\d:multiple|9:\d:optional"
                 class="form-control"
                 id="tax"
                 placeholder="Enter tax"
@@ -88,20 +92,25 @@
         </tr>
       </tbody>
     </table>
+    <vue3-confirm-dialog></vue3-confirm-dialog>
   </div>
 </template>
 
 <script>
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import openIcon from "@/assets/icons/open.svg";
 import deleteIcon from "@/assets/icons/delete.svg";
 import editIcon from "@/assets/icons/edit.svg";
 import saveIcon from "@/assets/icons/save.svg";
 import addIcon from "@/assets/icons/add.svg";
 import ProductCategoryService from "../services/ProductCategory";
+import { vMaska } from "maska";
+import { toast } from "vue3-toastify";
 
 export default {
   name: "ProductCategory",
-  components: {},
+  components: {LoadingSpinner},
+  directives: { maska: vMaska },
   setup() {
     return {
       openIcon,
@@ -125,11 +134,13 @@ export default {
           error: false,
         },
       },
+      loading: true
     };
   },
   async mounted() {
     const productCategoryService = new ProductCategoryService();
     this.categories = await productCategoryService.getCategories();
+    this.loading = false;
   },
   methods: {
     edit(categoryID) {
@@ -148,8 +159,13 @@ export default {
       this.resetInputs();
     },
     validate() {
-      if (this.input.name.value === "") this.input.name.error = true;
-      if (this.input.tax.value === "") this.input.tax.error = true;
+      console.log(this.input.name.value);
+      if (!this.input.name.value) this.input.name.error = true;
+      else this.input.name.error = false;
+
+      if (!this.input.tax.value) this.input.tax.error = true;
+      else this.input.tax.error = false;
+
       if (this.input.name.error || this.input.tax.error) return false;
       return true;
     },
@@ -174,9 +190,26 @@ export default {
       this.edditing = null;
     },
     async deleteCategory(categoryID, categoryIndex) {
-      const productCategoryService = new ProductCategoryService();
-      await productCategoryService.deleteCategory(categoryID);
-      this.categories.splice(categoryIndex, 1);
+      this.$confirm({
+        message: "Are you sure?",
+        button: {
+          no: "No",
+          yes: "Yes",
+        },
+        callback: async (confirm) => {
+          if (confirm) {
+            const productCategoryService = new ProductCategoryService();
+            await productCategoryService.deleteCategory(categoryID);
+            this.categories.splice(categoryIndex, 1);
+
+            toast("Product Category deleted.", {
+              autoClose: 3000,
+              type: "success",
+              transition: "slide",
+            });
+          }
+        },
+      });
     },
   },
 };

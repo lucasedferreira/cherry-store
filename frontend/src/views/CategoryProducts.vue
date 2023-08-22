@@ -1,7 +1,8 @@
 <template>
-  <div class="container">
+  <div class="container text-center">
     <h1>{{ category.name }}</h1>
-    <table class="table" v-show="category">
+    <LoadingSpinner v-if="loading" style="margin-top: 15px" />
+    <table class="table text-left" v-if="!loading">
       <thead>
         <tr>
           <th>Name</th>
@@ -10,6 +11,13 @@
         </tr>
       </thead>
       <tbody>
+        <th
+          colspan="3"
+          class="text-center"
+          v-show="!category.products || !category.products.length"
+        >
+          Bah, please add some products 🙏
+        </th>
         <tr :key="product.id" v-for="(product, index) in category.products">
           <td v-show="edditing != product.id">{{ product.name }}</td>
           <td v-show="edditing != product.id">R$ {{ product.price }}</td>
@@ -63,7 +71,9 @@
             <div class="form-group">
               <label for="price">Price (R$)</label>
               <input
-                type="text"
+                v-maska
+                data-maska="0.99"
+                data-maska-tokens="0:\d:multiple|9:\d:optional"
                 class="form-control"
                 id="price"
                 placeholder="Enter price"
@@ -82,20 +92,25 @@
         </tr>
       </tbody>
     </table>
+    <vue3-confirm-dialog></vue3-confirm-dialog>
   </div>
 </template>
 
 <script>
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import editIcon from "@/assets/icons/edit.svg";
 import saveIcon from "@/assets/icons/save.svg";
 import deleteIcon from "@/assets/icons/delete.svg";
 import addIcon from "@/assets/icons/add.svg";
 import ProductCategoryService from "../services/ProductCategory";
 import ProductService from "../services/Product";
+import { vMaska } from "maska";
+import { toast } from "vue3-toastify";
 
 export default {
   name: "CategoryProducts",
-  components: {},
+  components: { LoadingSpinner },
+  directives: { maska: vMaska },
   setup() {
     return {
       editIcon,
@@ -118,6 +133,7 @@ export default {
           error: false,
         },
       },
+      loading: true,
     };
   },
   async mounted() {
@@ -125,6 +141,7 @@ export default {
     this.category = await productCategoryService.getByID(
       this.$route.params.categoryID
     );
+    this.loading = false;
   },
   methods: {
     async updateProduct(product) {
@@ -133,6 +150,8 @@ export default {
       this.edditing = null;
     },
     async add() {
+      if (!this.validate()) return;
+
       const productService = new ProductService();
       const createdProduct = await productService.addProduct({
         name: this.input.name.value,
@@ -140,10 +159,15 @@ export default {
         categoryID: this.category.id,
       });
       this.category.products.push(createdProduct);
+      this.resetInputs();
     },
     validate() {
-      if (this.input.name.value === "") this.input.name.error = true;
-      if (this.input.price.value === "") this.input.price.error = true;
+      if (!this.input.name.value) this.input.name.error = true;
+      else this.input.name.error = false;
+
+      if (!this.input.price.value) this.input.price.error = true;
+      else this.input.price.error = false;
+
       if (this.input.name.error || this.input.price.error) return false;
       return true;
     },
@@ -160,9 +184,26 @@ export default {
       };
     },
     async deleteProduct(productID, productIndex) {
-      const productService = new ProductService();
-      await productService.deleteProduct(productID);
-      this.category.products.splice(productIndex, 1);
+      this.$confirm({
+        message: "Are you sure?",
+        button: {
+          no: "No",
+          yes: "Yes",
+        },
+        callback: async (confirm) => {
+          if (confirm) {
+            const productService = new ProductService();
+            await productService.deleteProduct(productID);
+            this.category.products.splice(productIndex, 1);
+
+            toast("Product deleted.", {
+              autoClose: 3000,
+              type: "success",
+              transition: "slide",
+            });
+          }
+        },
+      });
     },
   },
 };

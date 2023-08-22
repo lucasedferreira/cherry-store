@@ -6,10 +6,10 @@ class BaseMiddleware
 {
   protected $requiredFields = [];
 
-  public function validate($category)
+  public function validate($data)
   {
     foreach ($this->requiredFields as $requiredField) {
-      if (!isset($category->$requiredField) || $category->$requiredField === "") {
+      if (!isset($data->$requiredField) || $data->$requiredField === "") {
         $this->returnError("Field " . $requiredField . " is required.");
       }
     }

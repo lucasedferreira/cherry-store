@@ -16,14 +16,12 @@ class Order extends BaseService
   public function all()
   {
     $orders = $this->model->all();
-
-    $orderProductModel = new OrderProductModel();
-    foreach ($orders as $order) {
+    return array_map(function ($order) {
+      $orderProductModel = new OrderProductModel();
       $orderProducts = $orderProductModel->getByOrderID($order['id']);
       $order['products'] = $orderProducts;
-    }
-
-    return $orders;
+      return $order;
+    }, $orders);
   }
 
   public function create($products)

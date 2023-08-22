@@ -11,6 +11,17 @@ class ProductCategory extends BaseService
     $this->model = new \CherryStore\Api\Model\ProductCategory();
   }
 
+  public function all()
+  {
+    $categories = $this->model->all();
+
+    return array_map(function ($category) {
+      $productModel = new ProductModel();
+      $category['products'] = $productModel->getByCategoryID($category['id']);
+      return $category;
+    }, $categories);
+  }
+
   public function getByID($categoryID)
   {
     $result = $this->model->getByID($categoryID);

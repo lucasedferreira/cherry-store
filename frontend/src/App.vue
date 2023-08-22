@@ -41,9 +41,27 @@ body {
   margin-top: 50px;
 }
 
+
 .table {
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+
+  & thead {
+    & tr {
+      & th {
+        border: 0;
+
+        &:first-child {
+          border-radius: 10px 0 0 0;
+        }
+
+        &:last-child {
+          border-radius: 0 10px 0 0;
+        }
+      }
+    }
+  }
 }
 
 thead {

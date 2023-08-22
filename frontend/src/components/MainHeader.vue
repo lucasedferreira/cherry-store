@@ -11,9 +11,15 @@
         <ul>
           <li @click="navigateTo('Home')">Home</li>
           <li @click="navigateTo('ProductCategory')">Product Categories</li>
-          <li @click="navigateTo('Order')">Orders</li>
-          <li @click="navigateTo('NewOrder')">Make a Order</li>
-          <li><a href="https://github.com/lucasedferreira/cherry-store" target="_blank"><img :src="githubIcon" height="30" alt="github" /></a></li>
+          <li @click="navigateTo('OrderList')">Orders</li>
+          <li @click="navigateTo('MakeOrder')">Make an Order</li>
+          <li>
+            <a
+              href="https://github.com/lucasedferreira/cherry-store"
+              target="_blank"
+              ><img :src="githubIcon" height="30" alt="github"
+            /></a>
+          </li>
         </ul>
       </nav>
     </div>

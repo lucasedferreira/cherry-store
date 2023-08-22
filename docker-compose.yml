@@ -36,6 +36,15 @@ services:
       - store
     depends_on:
       - db
+  front:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: vueapp-cherrystore
+    volumes:
+      - ./frontend:/app
+    ports:
+      - 9090:8080
 
 networks:
   store:

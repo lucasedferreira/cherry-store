@@ -11,9 +11,12 @@
     "axios": "^1.4.0",
     "bootstrap": "^4.1",
     "core-js": "^3.8.3",
-    "vue": "^3.2.13",
+    "maska": "^2.1.10",
+    "vue": "^3.2.26",
     "vue-router": "^4.0.13",
-    "vue3-carousel": "^0.3.1"
+    "vue3-carousel": "^0.3.1",
+    "vue3-confirm-dialog": "^0.1.1",
+    "vue3-toastify": "^0.1.12"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

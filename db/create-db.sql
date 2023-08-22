@@ -37,7 +37,7 @@ CREATE TABLE order_products (
   created_at TIMESTAMP NOT NULL DEFAULT now(),
   updated_at TIMESTAMP NOT NULL DEFAULT now(),
   FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE,
-  FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
+  FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE SET NULL
 );
 
 INSERT INTO
