@@ -43,18 +43,19 @@ CREATE TABLE order_products (
 INSERT INTO
   product_categories(name, tax)
 VALUES
-  ('Categoria 1', 1.5),
-  ('Categoria 2', 2),
-  ('Categoria 4', 4);
+  ('Lanches', 1.5),
+  ('Sobremesas', 2),
+  ('Bebidas', 4);
 
 INSERT INTO
   products(name, price, category_id)
 VALUES
-  ('Produto 1', 20, 1),
-  ('Produto 2', 15, 1),
-  ('Produto 3', 30, 1),
-  ('Produto 4', 19.99, 2),
-  ('Produto 5', 11, 2),
-  ('Produto 6', 5, 2),
-  ('Produto 7', 50, 3),
-  ('Produto 8', 100, 3);
+  ('Coxinha', 5, 1),
+  ('Pastel', 7, 1),
+  ('Croissant', 10, 1),
+  ('Brigadeiro', 2, 2),
+  ('Beijinho', 2.5, 2),
+  ('Bolo', 30, 2),
+  ('Refrigerante', 10, 3),
+  ('Água', 2, 3),
+  ('Suco', 7.5, 3);

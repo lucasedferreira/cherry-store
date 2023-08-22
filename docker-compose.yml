@@ -9,8 +9,7 @@ services:
       - POSTGRES_PASSWORD=changeme
       - PGDATA=/var/lib/postgresql/data/cherry-store
     volumes:
-      - ./db/:/docker-entrypoint-initdb.d # this is how we persist a sql db even when container stops
-      # - "psql-data:/var/lib/postgresql/data"
+      - ./db/:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
     networks:
@@ -21,7 +20,7 @@ services:
       dockerfile: Dockerfile
     container_name: phpapp-cherrystore
     volumes:
-      - ./backend/src:/var/www/html # sync the current dir on local machine to the dir of container
+      - ./backend/src:/var/www/html
     entrypoint: [ "bash", "-c", "cd /var/www && composer dump-autoload && cd html && php -S 0.0.0.0:9000"]  
     ports:
       - 9000:9000
@@ -41,8 +40,6 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: vueapp-cherrystore
-    volumes:
-      - ./frontend:/app
     ports:
       - 9090:8080
 
