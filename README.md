@@ -33,19 +33,28 @@ totalizador do valor dos impostos;
 
 ### O que isto fez?
 No arquivo `docker-compose.yml` é criado 4 containers. São eles:
+
 **Banco de Dados**: PostgreSQL na versão 15.4, onde é definido as variáveis de ambiente para acessar o mesmo;
+
 **Backend**: É criado uma imagem a partir do PHP 8.2.6 com apache, instalando os pacotes necessários e subindo a API para a porta 9000;
+
 **Adminer**: Ferramenta para gerenciar o banco de dados;
+
 **Frontend**: É criado uma imagem com node para instalar as dependências, buildar e rodar a aplicação.
 Também é rodado um script que cria o banco de dados e já inserem alguns dados para teste.
 
 ## Como Acessar a Aplicação e a API 🖥️
 Depois que todos os containers estão rodando, é possível acessá-los através das seguintes portas:
+
 Adminer -> http://localhost:5050
-host: db
-user: postgres
-password: changeme
+> host: db
+> 
+> user: postgres
+> 
+> password: changeme
+
 Backend -> http://localhost:9000
+
 Frontend -> http://localhost:9090
 
 ## O Tempo Não Permitiu 🕓
